@@ -1,0 +1,19 @@
+.Main {
+    padding: 15px;
+}
+.content {
+    background-color: transparent;
+    display: flex;
+    gap: 60px;
+}
+.preview {
+    width: 30vw;
+}
+.header {
+    color: white;
+}
+.crawl {
+    margin-top: 10px;
+    margin-right: 40px;
+    color: white;
+}
