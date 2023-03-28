@@ -5,9 +5,27 @@
 body {
     background-color: #212021;
     background-image: linear-gradient(to bottom, #212021, #1c1b1c);
-    width: 100vw;
+}
+.App {
+    display: flex;
     height: 100vh;
+}
+.preview {
+    width: 15vw;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transition: 0.5s;
+}
+.preview:hover {
+    scale: 1.1;
+    transform: translateY(-5px) translateX(5px);
+    z-index: 1000;
+}
+.Menu {
+    overflow: hidden;
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 auto;
+    gap: 10px;
 }
