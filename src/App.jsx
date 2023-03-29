@@ -16,7 +16,7 @@ export const App = () => {
       <Routes>
         <Route path='/' element={<Menu paths={arr} />} />
         {arr.map((el, i) =>
-          <Route path={`/${i+1}`} element={<Main chapter={i+1} preview={el} />} key={el.toString()} />
+          <Route path={`/${i+1}`} element={<Main chapter={i+1} preview={el} />} key={i} />
         )}
       </Routes>
     </div>

@@ -46,9 +46,13 @@
     padding-bottom: 20px;
 }
 .hero_text > p {
-    text-align: center;
+    /* text-align: center; */
 }
 .hero_text > a {
     color: white;
-    text-align: center;
+    /* text-align: center; */
+}
+h2 {
+    color: white;
+    margin: 15px 0;
 }

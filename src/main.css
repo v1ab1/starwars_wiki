@@ -4,9 +4,9 @@
     font-family: sans-serif;
 }
 body {
-    background-color: #212021;
+    background-color: #1c1b1c;
     background-image: linear-gradient(to bottom, #212021, #1c1b1c);
-    overflow: hidden;
+    overflow-x: hidden;
 }
 .App {
     display: flex;
