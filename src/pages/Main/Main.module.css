@@ -17,3 +17,38 @@
     margin-right: 40px;
     color: white;
 }
+.characters {
+    display: flex;
+    overflow: scroll;
+    width: 60vw;
+}
+.hero {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+.hero_img_wrapper {
+    height: 30vh;
+    width: 20vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero_img_wrapper > img {
+    height: 30vh;
+}
+.hero_text {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: white;
+    padding-bottom: 20px;
+}
+.hero_text > p {
+    text-align: center;
+}
+.hero_text > a {
+    color: white;
+    text-align: center;
+}
