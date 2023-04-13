@@ -25,66 +25,58 @@ export const Main = ({chapter, preview}) => {
       const species = [...res.data.species];
       const starships = [...res.data.starships];
       const vehicles = [...res.data.vehicles];
-      return { characters, planets, species, starships, vehicles };
+
+      
+      Promise.all(characters.map(el => axios.get(`https://akabab.github.io/starwars-api/api/id/${el.slice(el.slice(0, -1).lastIndexOf("/") + 1, -1)}.json`)))
+      .then(responseArr => {
+        const updatedChrData = responseArr.map(response => [response.data.name, response.data.homeworld, response.data.wiki, response.data.image]);
+        setCharactersData(updatedChrData);
+      });
+
+
+      Promise.all(planets.map(el => axios.get(el)))
+      .then(responseArr => {
+        const updatedPlanetsData = responseArr.map(response => [response.data.name, response.data.climate, response.data.terrain, response.data.population]);
+        setPlanetsData(updatedPlanetsData);
+      });
+
+
+      Promise.all(species.map(el => axios.get(el)))
+      .then(responseArr => {
+        const images = [];
+        const homeworlds = [];
+        responseArr.forEach((obj) => {
+          axios.get(`https://akabab.github.io/starwars-api/api/id/${obj.data.people[0].slice(obj.data.people[0].slice(0, -1).lastIndexOf("/") + 1, -1)}.json`)
+          .then(responseArr => {
+            images.push(...responseArr.map(response => response.data.image));
+          });
+        });
+        responseArr.forEach((obj) => {
+          axios.get(obj.data.homeworld)
+          .then(response => {
+            homeworlds.push(response.data.name);
+          });
+        });
+        const updatedSpeciesData = responseArr.map((response, index) => [response.data.name, response.data.average_height, response.data.average_lifespan, homeworlds[index], response.data.language, images[index]]);
+        setSpeciesData(updatedSpeciesData);
+      });
+
+
+      Promise.all(starships.map(el => axios.get(el)))
+      .then(responseArr => {
+        const updatedStarshipsData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.hyperdrive_rating, response.data.MGLT, response.data.starship_class]);
+        setStarshipsData(updatedStarshipsData);
+      });
+
+
+      Promise.all(vehicles.map(el => axios.get(el)))
+      .then(responseArr => {
+        const updatedVeniclesData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.vehicle_class]);
+        setVehiclesData(updatedVeniclesData);
+      });
     })
-    .then(({ characters, planets, species, starships, vehicles }) => {
-      const charactersPromise = new Promise((resolve) => {
-        Promise.all(characters.map(el => axios.get(`https://akabab.github.io/starwars-api/api/id/${el.slice(el.slice(0, -1).lastIndexOf("/") + 1, -1)}.json`)))
-        .then(responseArr => {
-          const updatedChrData = responseArr.map(response => [response.data.name, response.data.homeworld, response.data.wiki, response.data.image]);
-          setCharactersData(updatedChrData);
-        })
-        .then(() => resolve());
-      });
-      const planetsPromise = new Promise((resolve) => {
-        Promise.all(planets.map(el => axios.get(el)))
-        .then(responseArr => {
-          const updatedPlanetsData = responseArr.map(response => [response.data.name, response.data.climate, response.data.terrain, response.data.population]);
-          setPlanetsData(updatedPlanetsData);
-        })
-        .then(() => resolve());
-      });
-      const starshipsPromise = new Promise((resolve) => {
-        Promise.all(starships.map(el => axios.get(el)))
-        .then(responseArr => {
-          const updatedStarshipsData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.hyperdrive_rating, response.data.MGLT, response.data.starship_class]);
-          setStarshipsData(updatedStarshipsData);
-        })
-        .then(() => resolve());
-      });
-      const veniclesPromise = new Promise((resolve) => {
-        Promise.all(vehicles.map(el => axios.get(el)))
-        .then(responseArr => {
-          const updatedVeniclesData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.vehicle_class]);
-          setVehiclesData(updatedVeniclesData);
-        })
-        .then(() => resolve());
-      });
-      const speciesPromise = new Promise((resolve) => {
-        Promise.all(species.map(el => axios.get(el)))
-        .then(responseArr => {
-          const promisesImages = responseArr.map(obj => {
-            const id = obj.data.people[0].slice(obj.data.people[0].slice(0, -1).lastIndexOf("/") + 1, -1);
-            return axios.get(`https://akabab.github.io/starwars-api/api/id/${id}.json`);
-          });
-          const promisesHomeworlds = responseArr.map(obj => {
-            return axios.get(obj.data.homeworld);
-          });
-          const first = Promise.all(promisesImages)
-            .then(responses => {
-              const images = responses.map(response => response.data.image);
-          });
-          const second = Promise.all(promisesHomeworlds)
-            .then(responses => {
-              const homeworlds = responses.map(response => response.data.name);
-            });
-          Promise.all([first, second])
-          .then(() => {
-            
-            resolve()});
-        })
-        .then(() => resolve());
-      });
+    .then(() => {
+      setLoading(false);
     })
     .catch((error) => {
       console.log(error);
