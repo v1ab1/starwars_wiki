@@ -16,6 +16,9 @@ export const Main = ({chapter, preview}) => {
 
   useEffect(() => {
     setLoading(true);
+    const imagesSpecies = [];
+    const homeworldsSpecies = [];
+    const responseSpecies = [];
     const url = chapter > 3 ? chapter - 3 : chapter + 3;
     axios.get(`https://swapi.dev/api/films/${url}`)
     .then((res) => {
@@ -63,6 +66,7 @@ export const Main = ({chapter, preview}) => {
       const speciesPromise = new Promise((resolve) => {
         Promise.all(species.map(el => axios.get(el)))
         .then(responseArr => {
+          responseSpecies.push(...responseArr);
           const promisesImages = responseArr.map(obj => {
             const id = obj.data.people[0].slice(obj.data.people[0].slice(0, -1).lastIndexOf("/") + 1, -1);
             return axios.get(`https://akabab.github.io/starwars-api/api/id/${id}.json`);
@@ -72,18 +76,28 @@ export const Main = ({chapter, preview}) => {
           });
           const first = Promise.all(promisesImages)
             .then(responses => {
-              const images = responses.map(response => response.data.image);
+              const imagesTemp = responses.map(response => response.data.image);
+              imagesSpecies.push(...imagesTemp);
           });
           const second = Promise.all(promisesHomeworlds)
             .then(responses => {
-              const homeworlds = responses.map(response => response.data.name);
+              const homeworldsTemp = responses.map(response => response.data.name);
+              homeworldsSpecies.push(...homeworldsTemp);
             });
           Promise.all([first, second])
           .then(() => {
-            
-            resolve()});
+            resolve();
+          });
         })
-        .then(() => resolve());
+        .then(() => {
+          const updatedSpeciesData = responseSpecies.map((response, index) => [response.data.name, response.data.average_height, response.data.average_lifespan, imagesSpecies[index], response.data.language, homeworldsSpecies[index]]);
+          setSpeciesData(updatedSpeciesData);
+          resolve();
+        });
+      });
+      Promise.all([charactersPromise, planetsPromise, starshipsPromise, veniclesPromise, speciesPromise])
+      .then(() => {
+        setLoading(false);
       });
     })
     .catch((error) => {
