@@ -31,3 +31,42 @@ body {
     margin: 0 auto;
     gap: 10px;
 }
+svg {
+    display: none;
+}
+
+body {
+    background-image: unset;   
+}
+
+@media (max-width: 1225px) {
+    .App {
+        height: unset;
+    }
+    .Menu {
+        overflow: unset;
+        flex-direction: column;
+        gap: 30px;
+        position: relative;
+    }
+    .preview {
+        width: 60vw;
+    }
+    svg {
+        display: block;
+        position: absolute;
+        top: 700px;
+        width: 8vw;
+        right: -80px;
+    }
+}
+
+@media (max-width: 425px) {
+    svg {
+        display: block;
+        position: absolute;
+        top: 700px;
+        width: 10vw;
+        right: -40px;
+    }
+}

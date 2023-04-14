@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import style from "./Main.module.css";
-import { Arrow } from "./Arrow";
+import { Scroll } from "./Scroll";
+import loading from "./loading.gif";
 import unknown from "./unknown.png";
 
 export const Main = ({chapter, preview}) => {
   const [data, setData] = useState([]);
-  const [err, setErr] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [charactersData, setCharactersData] = useState([]);
   const [planetsData, setPlanetsData] = useState([]);
@@ -96,7 +96,7 @@ export const Main = ({chapter, preview}) => {
 
   return (
     <div className={style.Main}>
-      {isLoading ? chapter : 
+      {isLoading ? <img className={style.loading} src={loading} alt="loading" /> : 
       <div className={style.content}>
         <img className={style.preview} src={preview} alt="preview" />
         <div className={style.desc}>
@@ -146,7 +146,7 @@ export const Main = ({chapter, preview}) => {
                     Homeworld: {el[1]}
                   </p>
                   <a href={el[2]}>
-                    Wiki
+                    Wiki: <span>click</span>
                   </a>
                 </div>
               </div>
@@ -159,8 +159,6 @@ export const Main = ({chapter, preview}) => {
             {/* <Arrow className={style.arrow} /> */}
             {planetsData.map((el, i) => (
               <div className={style.hero} key={i}>
-                <div className={style.hero_img_wrapper}>
-                </div>
                 <div className={style.hero_text}>
                   <p>
                     Name: {el[0]}
@@ -228,9 +226,7 @@ export const Main = ({chapter, preview}) => {
             {/* <Arrow className={style.arrow} /> */}
             {starshipsData.map((el, i) => (
               <div className={style.hero} key={i}>
-                <div className={style.hero_img_wrapper}>
-                </div>
-                <div className={style.hero_text}>
+                <div className={style.hero_venicles}>
                   <p>
                     Name: {el[0]}
                   </p>
@@ -281,9 +277,7 @@ export const Main = ({chapter, preview}) => {
             {/* <Arrow className={style.arrow} /> */}
             {vehiclesData.map((el, i) => (
               <div className={style.hero} key={i}>
-                <div className={style.hero_img_wrapper}>
-                </div>
-                <div className={style.hero_text}>
+                <div className={style.hero_venicles}>
                   <p>
                     Name: {el[0]}
                   </p>

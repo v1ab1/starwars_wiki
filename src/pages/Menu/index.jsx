@@ -1,3 +1,5 @@
+import { Scroll } from "../Main/Scroll";
+
 export const Poster = ({path}) => {
     return (<img className="preview" src={path} alt="poster" />);
 };
@@ -10,6 +12,7 @@ export const Menu = ({paths}) => {
             <Poster path={el} key={i} />
         </a>
       )}
+      <Scroll />
     </div>
   );
 }
