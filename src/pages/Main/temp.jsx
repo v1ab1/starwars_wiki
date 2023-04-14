@@ -17,6 +17,7 @@ export const Main = ({chapter, preview}) => {
   useEffect(() => {
     setLoading(true);
     const imagesSpecies = [];
+    const homeworldsSpecies = [];
     const responseSpecies = [];
     const url = chapter > 3 ? chapter - 3 : chapter + 3;
     axios.get(`https://swapi.dev/api/films/${url}`)
@@ -70,15 +71,28 @@ export const Main = ({chapter, preview}) => {
             const id = obj.data.people[0].slice(obj.data.people[0].slice(0, -1).lastIndexOf("/") + 1, -1);
             return axios.get(`https://akabab.github.io/starwars-api/api/id/${id}.json`);
           });
-          const first = Promise.all(promisesImages)
-          .then(responses => {
-            const imagesTemp = responses.map(response => response.data.image);
-            console.log('first end');
-            return imagesTemp;
+          const promisesHomeworlds = responseArr.map(obj => {
+            console.log(obj.data.homeworld);
+            return axios.get(obj.data.homeworld);
           });
-          first.then((imagesTemp) => {
+          const first = Promise.all(promisesImages)
+            .then(responses => {
+              const imagesTemp = responses.map(response => response.data.image);
+              console.log('first end');
+              return imagesTemp;
+          });
+          const second = Promise.all(promisesHomeworlds)
+            .then(responses => {
+              console.log('second start');
+              const homeworldsTemp = responses.map(response => response.data.name);
+              console.log('second end');
+              return homeworldsTemp;
+            });
+          Promise.all([first, second])
+          .then(({imagesTemp, homeworldsTemp}) => {
             imagesSpecies.push(...imagesTemp);
-            const updatedSpeciesData = responseSpecies.map((response, index) => [response.data.name, response.data.average_height, response.data.average_lifespan, imagesSpecies[index], response.data.language]);
+            homeworldsSpecies.push(...homeworldsTemp);
+            const updatedSpeciesData = responseSpecies.map((response, index) => [response.data.name, response.data.average_height, response.data.average_lifespan, imagesSpecies[index], response.data.language, homeworldsSpecies[index]]);
             setSpeciesData(updatedSpeciesData);
             console.log('end');
             resolve();

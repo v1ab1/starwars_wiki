@@ -16,6 +16,8 @@ export const Main = ({chapter, preview}) => {
 
   useEffect(() => {
     setLoading(true);
+    const imagesSpecies = [];
+    const responseSpecies = [];
     const url = chapter > 3 ? chapter - 3 : chapter + 3;
     axios.get(`https://swapi.dev/api/films/${url}`)
     .then((res) => {
@@ -25,64 +27,70 @@ export const Main = ({chapter, preview}) => {
       const species = [...res.data.species];
       const starships = [...res.data.starships];
       const vehicles = [...res.data.vehicles];
-
-      
-      Promise.all(characters.map(el => axios.get(`https://akabab.github.io/starwars-api/api/id/${el.slice(el.slice(0, -1).lastIndexOf("/") + 1, -1)}.json`)))
-      .then(responseArr => {
-        const updatedChrData = responseArr.map(response => [response.data.name, response.data.homeworld, response.data.wiki, response.data.image]);
-        setCharactersData(updatedChrData);
+      return { characters, planets, species, starships, vehicles };
+    })
+    .then(({ characters, planets, species, starships, vehicles }) => {
+      const charactersPromise = new Promise((resolve) => {
+        Promise.all(characters.map(el => axios.get(`https://akabab.github.io/starwars-api/api/id/${el.slice(el.slice(0, -1).lastIndexOf("/") + 1, -1)}.json`)))
+        .then(responseArr => {
+          const updatedChrData = responseArr.map(response => [response.data.name, response.data.homeworld, response.data.wiki, response.data.image]);
+          setCharactersData(updatedChrData);
+        })
+        .then(() => resolve());
       });
-
-
-      Promise.all(planets.map(el => axios.get(el)))
-      .then(responseArr => {
-        const updatedPlanetsData = responseArr.map(response => [response.data.name, response.data.climate, response.data.terrain, response.data.population]);
-        setPlanetsData(updatedPlanetsData);
+      const planetsPromise = new Promise((resolve) => {
+        Promise.all(planets.map(el => axios.get(el)))
+        .then(responseArr => {
+          const updatedPlanetsData = responseArr.map(response => [response.data.name, response.data.climate, response.data.terrain, response.data.population]);
+          setPlanetsData(updatedPlanetsData);
+        })
+        .then(() => resolve());
       });
-
-
-      Promise.all(species.map(el => axios.get(el)))
-      .then(responseArr => {
-        const images = [];
-        const homeworlds = [];
-        responseArr.forEach((obj) => {
-          axios.get(`https://akabab.github.io/starwars-api/api/id/${obj.data.people[0].slice(obj.data.people[0].slice(0, -1).lastIndexOf("/") + 1, -1)}.json`)
-          .then(responseArr => {
-            images.push(...responseArr.map(response => response.data.image));
+      const starshipsPromise = new Promise((resolve) => {
+        Promise.all(starships.map(el => axios.get(el)))
+        .then(responseArr => {
+          const updatedStarshipsData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.hyperdrive_rating, response.data.MGLT, response.data.starship_class]);
+          setStarshipsData(updatedStarshipsData);
+        })
+        .then(() => resolve());
+      });
+      const veniclesPromise = new Promise((resolve) => {
+        Promise.all(vehicles.map(el => axios.get(el)))
+        .then(responseArr => {
+          const updatedVeniclesData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.vehicle_class]);
+          setVehiclesData(updatedVeniclesData);
+        })
+        .then(() => resolve());
+      });
+      const speciesPromise = new Promise((resolve) => {
+        Promise.all(species.map(el => axios.get(el)))
+        .then(responseArr => {
+          responseSpecies.push(...responseArr);
+          const promisesImages = responseArr.map(obj => {
+            const id = obj.data.people[0].slice(obj.data.people[0].slice(0, -1).lastIndexOf("/") + 1, -1);
+            return axios.get(`https://akabab.github.io/starwars-api/api/id/${id}.json`);
+          });
+          const first = Promise.all(promisesImages)
+          .then(responses => {
+            const imagesTemp = responses.map(response => response.data.image);
+            console.log('first end');
+            return imagesTemp;
+          });
+          first.then((imagesTemp) => {
+            imagesSpecies.push(...imagesTemp);
+            const updatedSpeciesData = responseSpecies.map((response, index) => [response.data.name, response.data.average_height, response.data.average_lifespan, imagesSpecies[index], response.data.language]);
+            setSpeciesData(updatedSpeciesData);
+            console.log('end');
+            resolve();
           });
         });
-        responseArr.forEach((obj) => {
-          axios.get(obj.data.homeworld)
-          .then(response => {
-            homeworlds.push(response.data.name);
-          });
-        });
-        const updatedSpeciesData = responseArr.map((response, index) => [response.data.name, response.data.average_height, response.data.average_lifespan, homeworlds[index], response.data.language, images[index]]);
-        setSpeciesData(updatedSpeciesData);
       });
-
-
-      Promise.all(starships.map(el => axios.get(el)))
-      .then(responseArr => {
-        const updatedStarshipsData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.hyperdrive_rating, response.data.MGLT, response.data.starship_class]);
-        setStarshipsData(updatedStarshipsData);
+      Promise.all([charactersPromise, planetsPromise, starshipsPromise, veniclesPromise, speciesPromise])
+      .then(() => {
+        setLoading(false);
       });
-
-
-      Promise.all(vehicles.map(el => axios.get(el)))
-      .then(responseArr => {
-        const updatedVeniclesData = responseArr.map(response => [response.data.name, response.data.model, response.data.manufacturer, response.data.cost_in_credits, response.data.length, response.data.max_atmosphering_speed, response.data.crew, response.data.passengers, response.data.cargo_capacity, response.data.consumables, response.data.vehicle_class]);
-        setVehiclesData(updatedVeniclesData);
-      });
-    })
-    .then(() => {
-      setLoading(false);
-    })
-    .catch((error) => {
-      console.log(error);
-      setErr(!err);
     });
-  }, [err]);
+  }, []);
 
   //https://akabab.github.io/starwars-api/api/id/1.json
 
@@ -175,12 +183,12 @@ export const Main = ({chapter, preview}) => {
           </h2>
           <div className={style.characters}>
             {/* <Arrow className={style.arrow} /> */}
-            {speciesData.map((el, i) => (
+            {speciesData.map((el, i) => {console.log(el); return (
               <div className={style.hero} key={i}>
                 <div className={style.hero_img_wrapper}>
-                  {/* <img src={el[5] ? el[5] : unknown}    alt="character" ref={(img) => {
+                  <img src={el[3] ? el[3] : unknown}    alt="character" ref={(img) => {
                     if (img) {
-                      fetch(el[5])
+                      fetch(el[3])
                         .then((response) => {
                           if (!response.ok) {
                               img.src = unknown;
@@ -191,7 +199,7 @@ export const Main = ({chapter, preview}) => {
                           img.src = unknown;
                         });
                     }
-                  }}/> */}
+                  }}/>
                 </div>
                 <div className={style.hero_text}>
                   <p>
@@ -203,15 +211,15 @@ export const Main = ({chapter, preview}) => {
                   <p>
                     Average lifespan: {el[2]}
                   </p>
-                  <p style={{textTransform: "capitalize"}}>
+                  {/* <p style={{textTransform: "capitalize"}}>
                     Homeworld: {el[3]}
-                  </p>
+                  </p> */}
                   <p>
                     Language: {el[4]}
                   </p>
                 </div>
               </div>
-            ))}
+            )})}
           </div>
           <h2>
             Starships
