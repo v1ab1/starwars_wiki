@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/starwars-wiki/static/css/main.1fd7e566.css",
-    "main.js": "/starwars-wiki/static/js/main.30381ceb.js",
-    "static/media/2.webp": "/starwars-wiki/static/media/2.fade21948a21430d3a7b.webp",
-    "static/media/4.webp": "/starwars-wiki/static/media/4.7ab5dae75ecbfda3832c.webp",
-    "static/media/1.webp": "/starwars-wiki/static/media/1.2eec60a7c04df07e8d55.webp",
-    "static/media/5.webp": "/starwars-wiki/static/media/5.37a3db10f975cf7ed729.webp",
-    "static/media/3.webp": "/starwars-wiki/static/media/3.ec9e15d102a6c611bece.webp",
-    "static/media/6.webp": "/starwars-wiki/static/media/6.e9ca628fb4d4f4f3a0be.webp",
-    "static/media/loading.gif": "/starwars-wiki/static/media/loading.803f24369a085e35482e.gif",
-    "static/media/unknown.png": "/starwars-wiki/static/media/unknown.b2e5dcce4731e9d1b5d6.png",
-    "index.html": "/starwars-wiki/index.html",
-    "main.1fd7e566.css.map": "/starwars-wiki/static/css/main.1fd7e566.css.map",
-    "main.30381ceb.js.map": "/starwars-wiki/static/js/main.30381ceb.js.map"
+    "main.css": "/starwars_wiki/static/css/main.1fd7e566.css",
+    "main.js": "/starwars_wiki/static/js/main.6cb4e683.js",
+    "static/media/2.webp": "/starwars_wiki/static/media/2.fade21948a21430d3a7b.webp",
+    "static/media/4.webp": "/starwars_wiki/static/media/4.7ab5dae75ecbfda3832c.webp",
+    "static/media/1.webp": "/starwars_wiki/static/media/1.2eec60a7c04df07e8d55.webp",
+    "static/media/5.webp": "/starwars_wiki/static/media/5.37a3db10f975cf7ed729.webp",
+    "static/media/3.webp": "/starwars_wiki/static/media/3.ec9e15d102a6c611bece.webp",
+    "static/media/6.webp": "/starwars_wiki/static/media/6.e9ca628fb4d4f4f3a0be.webp",
+    "static/media/loading.gif": "/starwars_wiki/static/media/loading.803f24369a085e35482e.gif",
+    "static/media/unknown.png": "/starwars_wiki/static/media/unknown.b2e5dcce4731e9d1b5d6.png",
+    "index.html": "/starwars_wiki/index.html",
+    "main.1fd7e566.css.map": "/starwars_wiki/static/css/main.1fd7e566.css.map",
+    "main.6cb4e683.js.map": "/starwars_wiki/static/js/main.6cb4e683.js.map"
   },
   "entrypoints": [
     "static/css/main.1fd7e566.css",
-    "static/js/main.30381ceb.js"
+    "static/js/main.6cb4e683.js"
   ]
 }
