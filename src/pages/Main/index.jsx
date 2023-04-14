@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import style from "./Main.module.css";
-import { Scroll } from "./Scroll";
 import loading from "./loading.gif";
 import unknown from "./unknown.png";
 
@@ -90,7 +89,7 @@ export const Main = ({chapter, preview}) => {
         setLoading(false);
       });
     });
-  }, []);
+  }, [chapter]);
 
   //https://akabab.github.io/starwars-api/api/id/1.json
 
