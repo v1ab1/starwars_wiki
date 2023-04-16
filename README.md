@@ -4,7 +4,7 @@ The project was developed as part of the Advanced JavaScript Skillbox x UrFU IRI
 
 ## How to run?
 
-Open github pages in rigth side
+Open `Production` in rigth side
 
 Or
 
