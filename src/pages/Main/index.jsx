@@ -91,8 +91,6 @@ export const Main = ({chapter, preview}) => {
     });
   }, [chapter]);
 
-  //https://akabab.github.io/starwars-api/api/id/1.json
-
   return (
     <div className={style.Main}>
       {isLoading ? <img className={style.loading} src={loading} alt="loading" /> : 
@@ -118,7 +116,6 @@ export const Main = ({chapter, preview}) => {
             Characters
           </h2>
           <div className={style.characters}>
-            {/* <Arrow className={style.arrow} /> */}
             {charactersData.map((el, i) => (
               <div className={style.hero} key={i}>
                 <div className={style.hero_img_wrapper}>
@@ -155,7 +152,6 @@ export const Main = ({chapter, preview}) => {
             Planets
           </h2>
           <div className={style.characters}>
-            {/* <Arrow className={style.arrow} /> */}
             {planetsData.map((el, i) => (
               <div className={style.hero} key={i}>
                 <div className={style.hero_text}>
@@ -179,7 +175,6 @@ export const Main = ({chapter, preview}) => {
             Species
           </h2>
           <div className={style.characters}>
-            {/* <Arrow className={style.arrow} /> */}
             {speciesData.map((el, i) => {console.log(el); return (
               <div className={style.hero} key={i}>
                 <div className={style.hero_img_wrapper}>
@@ -208,9 +203,6 @@ export const Main = ({chapter, preview}) => {
                   <p>
                     Average lifespan: {el[2]}
                   </p>
-                  {/* <p style={{textTransform: "capitalize"}}>
-                    Homeworld: {el[3]}
-                  </p> */}
                   <p>
                     Language: {el[4]}
                   </p>
@@ -222,7 +214,6 @@ export const Main = ({chapter, preview}) => {
             Starships
           </h2>
           <div className={style.characters}>
-            {/* <Arrow className={style.arrow} /> */}
             {starshipsData.map((el, i) => (
               <div className={style.hero} key={i}>
                 <div className={style.hero_venicles}>
@@ -273,7 +264,6 @@ export const Main = ({chapter, preview}) => {
             Vehicles
           </h2>
           <div className={style.characters}>
-            {/* <Arrow className={style.arrow} /> */}
             {vehiclesData.map((el, i) => (
               <div className={style.hero} key={i}>
                 <div className={style.hero_venicles}>
